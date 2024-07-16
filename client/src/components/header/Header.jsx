@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './styles/styles.scss'
 
 export default function Header() {
@@ -8,13 +8,19 @@ export default function Header() {
 			<nav>
 				<ul>
 					<li>
-						<Link to='/stream'>Stream</Link>
+						<NavLink to='/stream' activeClassName='active'>
+							Stream
+						</NavLink>
 					</li>
 					<li>
-						<Link to='/homeworks'>Homeworks</Link>
+						<NavLink to='/homeworks' activeClassName='active'>
+							Homeworks
+						</NavLink>
 					</li>
 					<li>
-						<Link to='/users'>Users</Link>
+						<NavLink to='/users' activeClassName='active'>
+							Users
+						</NavLink>
 					</li>
 				</ul>
 			</nav>

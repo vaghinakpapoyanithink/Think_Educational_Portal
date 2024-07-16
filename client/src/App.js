@@ -17,13 +17,15 @@ function App() {
 				</div>
 				<div className='right'>
 					<Header />
-					<Routes>
-						<Route path='/stream' element={<Stream />} />
-						<Route path='/homeworks' element={<Homeworks />} />
-						<Route path='/homework' element={<Homework />} />
-						<Route path='/users' element={<Users />} />
-						<Route path='/' element={<Stream />} />
-					</Routes>
+					<div className='content'>
+						<Routes>
+							<Route path='/stream' element={<Stream />} />
+							<Route path='/homeworks' element={<Homeworks />} />
+							<Route path='/homework' element={<Homework />} />
+							<Route path='/users' element={<Users />} />
+							<Route path='/' element={<Stream />} />
+						</Routes>
+					</div>
 				</div>
 			</div>
 		</Router>
