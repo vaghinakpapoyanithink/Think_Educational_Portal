@@ -14,15 +14,15 @@ export default function Header({ role, setUser }) {
 	const logout = () => {
 		localStorage.removeItem('token')
 		setUser(null)
-		setShowLogoutPopup(false) // Close popup after logout
+		setShowLogoutPopup(false)
 	}
 
 	const handleLogoutClick = () => {
-		setShowLogoutPopup(!showLogoutPopup) // Toggle popup visibility
+		setShowLogoutPopup(!showLogoutPopup)
 	}
 
 	const handleClosePopup = () => {
-		setShowLogoutPopup(false) // Close popup without logging out
+		setShowLogoutPopup(false)
 	}
 
 	if (user.role === '') {

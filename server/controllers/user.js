@@ -3,7 +3,6 @@ const User = require('../models/User')
 const jwt = require('jwt-simple')
 const bcrypt = require('bcryptjs')
 
-// Register user
 const registerUser = async (req, res) => {
 	const { name, surname, username, email, password, role } = req.body
 
@@ -147,11 +146,9 @@ const deleteUser = async (req, res) => {
 const loginUser = async (req, res) => {
 	const { identifier, password } = req.body
 	try {
-		// Retrieve admin credentials from environment variables
 		const adminUsername = process.env.ADMIN_USERNAME
 		const adminEmail = process.env.ADMIN_EMAIL
 
-		// Check if the provided identifier matches the admin credentials
 		if (identifier === adminUsername || identifier === adminEmail) {
 			const user = await User.findOne({
 				$or: [{ email: adminEmail }, { username: adminUsername }],
@@ -170,13 +167,12 @@ const loginUser = async (req, res) => {
 					.json({ error: 'Invalid email/username or password' })
 			}
 
-			const payload = { id: user.id, role: 'admin' } // Ensuring the role is set to admin
+			const payload = { id: user.id, role: 'admin' }
 			const token = jwt.encode(payload, process.env.SECRET_OR_KEY)
 
 			return res.json({ token, role: 'admin' })
 		}
 
-		// Usual user login process with course population
 		const user = await User.findOne({
 			$or: [{ email: identifier }, { username: identifier }],
 		}).populate('courses')
@@ -194,7 +190,7 @@ const loginUser = async (req, res) => {
 				.json({ error: 'Invalid email/username or password' })
 		}
 
-		const payload = { id: user.id, role: user.role } // Ensure the payload is correctly set
+		const payload = { id: user.id, role: user.role }
 		const token = jwt.encode(payload, process.env.SECRET_OR_KEY)
 
 		res.json({
@@ -216,7 +212,7 @@ const getCurrentUser = async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id)
 			.select('-password')
-			.populate('courses') // Exclude the password from the response
+			.populate('courses')
 		if (!user) {
 			return res.status(404).json({ message: 'User not found' })
 		}

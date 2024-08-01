@@ -20,16 +20,13 @@ const addCourse = async (req, res) => {
 			students: selectedStudents,
 		})
 
-		// Save the course to the database
 		await newCourse.save()
 
-		// Add course to teacher's courses list
 		await User.updateMany(
 			{ _id: { $in: selectedTeacher } },
 			{ $push: { courses: newCourse._id } }
 		)
 
-		// Add course to students' courses list
 		await User.updateMany(
 			{ _id: { $in: selectedStudents } },
 			{ $push: { courses: newCourse._id } }
@@ -46,10 +43,8 @@ const addCourse = async (req, res) => {
 const getCoursesByUserId = async (req, res) => {
 	const { userId } = req.query
 	try {
-		// Find courses where the user is a teacher
 		const teacherCourses = await Course.find({ teachers: userId })
 
-		// Find courses where the user is a student
 		const studentCourses = await Course.find({ students: userId })
 
 		res.json({ teacherCourses, studentCourses })
@@ -110,7 +105,6 @@ const deleteCourse = async (req, res) => {
 			return res.status(404).send({ message: 'Course not found' })
 		}
 
-		// Remove course from teacher's and students' courses list
 		await User.updateMany(
 			{ courses: courseId },
 			{ $pull: { courses: courseId } }

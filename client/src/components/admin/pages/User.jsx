@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 
 export default function User() {
-	const { userId } = useParams() // Get userId from URL params
+	const { userId } = useParams()
 	const [user, setUser] = useState(null)
 	const [formData, setFormData] = useState({
 		name: '',
@@ -35,7 +35,7 @@ export default function User() {
 				username: userData.username,
 				email: userData.email,
 			})
-			setUserRole(userData.role) // Assuming 'role' is a property of user data
+			setUserRole(userData.role)
 			fetchCourses(userData.role)
 		} catch (error) {
 			console.error('Error fetching user:', error)
@@ -82,7 +82,6 @@ export default function User() {
 			const response = await axiosInstance.put(`/users/${userId}`, formData)
 			toast.success('User updated')
 			console.log('User updated: ', response?.data)
-			// Optionally update local state or show success message
 		} catch (error) {
 			toast.error('Error updating user: ' + error?.response?.data?.message)
 			console.error('Error updating user: ', error)

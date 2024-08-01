@@ -9,7 +9,7 @@ const {
 } = require('../controllers/user.js')
 const express = require('express')
 const passport = require('passport')
-require('../config/passport')(passport) // Ensure passport configuration is loaded
+require('../config/passport')(passport)
 
 const userRouter = express.Router()
 

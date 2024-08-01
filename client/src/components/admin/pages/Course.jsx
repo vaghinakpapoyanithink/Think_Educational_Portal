@@ -96,7 +96,6 @@ export default function Course() {
 			})
 			toast.success('Course updated')
 			console.log('Course updated: ', response?.data)
-			// Optionally update local state or show success message
 		} catch (error) {
 			toast.error('Error updating course: ' + error?.response?.data?.message)
 			console.error('Error updating course: ', error)

@@ -10,17 +10,15 @@ const chatRouter = require('./routes/chat.js')
 const http = require('http')
 const socketIo = require('socket.io')
 const Message = require('./models/Message')
-require('./config/passport')(passport) // Import Passport configuration
+require('./config/passport')(passport)
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
-// Middleware
 app.use(cors())
 app.use(express.json())
 app.use(passport.initialize())
 
-// Routes
 app.use('/api/users', usersRouter)
 app.use(
 	'/api/course',
@@ -38,8 +36,6 @@ const io = socketIo(server, {
 	cors: {
 		origin: 'http://localhost:3000',
 		methods: ['GET', 'POST'],
-		// allowedHeaders: ['Authorization'],
-		// credentials: true,
 	},
 })
 

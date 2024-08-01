@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import './styles/styles.scss'
 import blenderIcon from '../../assets/images/blender.png'
 import webIcon from '../../assets/images/web.png'
@@ -13,31 +14,30 @@ const courseIcons = {
 
 export default function Sidebar({ role }) {
 	const { user } = useContext(UserContext)
-	console.log(user)
-	if (!user) {
+
+	if (user?.courses?.length === 1 || !user || role === 'admin') {
 		return null
 	}
-	if (role === 'admin') {
-		return <></>
-	} else if (role === 'student') {
+
+	if (role === 'student') {
 		return (
 			<div className='sidebar'>
 				<ul>
 					{user.courses?.map(course => (
 						<li key={course.courseName}>
-							<a href='#'>
+							<Link to={`/${course.courseId}`}>
 								<img
 									src={courseIcons[course.courseName] || webIcon}
 									alt={course.courseName}
 								/>{' '}
 								{course.courseName}
-							</a>
+							</Link>
 						</li>
 					))}
 				</ul>
 			</div>
 		)
-	} else if ((role = 'teacher')) {
+	} else if (role === 'teacher') {
 		return (
 			<div className='sidebar'>
 				<ul>
