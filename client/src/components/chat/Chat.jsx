@@ -12,7 +12,7 @@ const Chat = ({ courseId }) => {
 	const handleSubmit = e => {
 		e.preventDefault()
 		if (content.trim() && user) {
-			sendMessage({ sender: user.name, content, timestamp: new Date() })
+			sendMessage({ sender: user.username, content, timestamp: new Date() })
 			setContent('')
 		}
 	}
@@ -37,7 +37,7 @@ const Chat = ({ courseId }) => {
 					<div
 						key={index}
 						className={`message ${
-							msg.sender === user.name ? 'sent' : 'received'
+							msg.sender === user.username ? 'sent' : 'received'
 						}`}
 					>
 						<div className='message-content'>

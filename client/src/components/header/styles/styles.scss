@@ -84,7 +84,8 @@ header.header {
 .logout-popup {
 	position: absolute;
 	top: 100%; /* Position below the header */
-	right: 0;
+	right: 30px;
+	transform: translateY(30px);
 	background: #fff;
 	border: 1px solid #ddd;
 	border-radius: 4px;
