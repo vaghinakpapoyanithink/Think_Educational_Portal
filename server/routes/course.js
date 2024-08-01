@@ -14,7 +14,7 @@ module.exports = io => {
 
 	router.post('/', addCourse)
 	router.get('/user', getCoursesByUserId)
-	router.get('/', getAllCourses)
+	router.get('/all', getAllCourses)
 	router.get('/:courseId', getCourseById)
 	router.put('/:courseId', updateCourse)
 	router.delete('/:courseId', deleteCourse)

@@ -15,6 +15,14 @@ require('./config/passport')(passport)
 const app = express()
 const PORT = process.env.PORT || 5000
 
+const server = http.createServer(app)
+const io = socketIo(server, {
+	cors: {
+		origin: 'http://localhost:3000',
+		methods: ['GET', 'POST'],
+	},
+})
+
 app.use(cors())
 app.use(express.json())
 app.use(passport.initialize())
@@ -23,21 +31,13 @@ app.use('/api/users', usersRouter)
 app.use(
 	'/api/course',
 	passport.authenticate('jwt', { session: false }),
-	courseRouter
+	courseRouter(io)
 )
 app.use(
 	'/api/chat',
 	passport.authenticate('jwt', { session: false }),
 	chatRouter
 )
-
-const server = http.createServer(app)
-const io = socketIo(server, {
-	cors: {
-		origin: 'http://localhost:3000',
-		methods: ['GET', 'POST'],
-	},
-})
 
 io.on('connection', socket => {
 	console.log('New client connected')
