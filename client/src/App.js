@@ -1,35 +1,38 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Header from './components/header/Header.jsx'
-import Stream from './pages/stream/Stream.jsx'
-import Homeworks from './pages/homeworks/Homeworks.jsx'
-import Homework from './pages/homework/Homework.jsx'
-import Users from './pages/users/Users.jsx'
-import Sidebar from './components/sidebar/Sidebar.jsx'
+import React, { useContext } from 'react'
+import NoRoleRoutes from './components/no-role/NoRoleRoutes.jsx'
+import AdminRoutes from './components/admin/AdminRoutes.jsx'
+import StudentRoutes from './components/student/StudentRoutes.jsx'
+import TeacherRoutes from './components/teacher/TeacherRoutes.jsx'
 import './styles/styles.scss'
+import Loading from './components/loading/Loading.jsx'
+import UserContext, { UserProvider } from './contexts/UserContext'
 
 function App() {
-	return (
-		<Router>
-			<div className='container'>
-				<div className='left'>
-					<Sidebar />
-				</div>
-				<div className='right'>
-					<Header />
-					<div className='content'>
-						<Routes>
-							<Route path='/stream' element={<Stream />} />
-							<Route path='/homeworks' element={<Homeworks />} />
-							<Route path='/homework' element={<Homework />} />
-							<Route path='/users' element={<Users />} />
-							<Route path='/' element={<Stream />} />
-						</Routes>
-					</div>
-				</div>
-			</div>
-		</Router>
-	)
+	const { user, setUser, loading } = useContext(UserContext)
+
+	if (loading) {
+		return <Loading />
+	}
+	if (!user?.role) {
+		return <NoRoleRoutes setUser={setUser} />
+	}
+	if (user?.role === 'admin') {
+		return <AdminRoutes isAuthenticated={!!user} setUser={setUser} />
+	}
+	if (user?.role === 'student') {
+		return <StudentRoutes isAuthenticated={!!user} />
+	}
+	if (user?.role === 'teacher') {
+		return <TeacherRoutes isAuthenticated={!!user} />
+	}
+
+	return null
 }
 
-export default App
+export default function AppWrapper() {
+	return (
+		<UserProvider>
+			<App />
+		</UserProvider>
+	)
+}
