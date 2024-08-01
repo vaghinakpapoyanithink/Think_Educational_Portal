@@ -8,14 +8,14 @@ import Homework from '../../pages/homework/Homework.jsx'
 import Users from '../../pages/users/Users.jsx'
 import ProtectedRoute from '../../components/hoc/ProtectedRoute.jsx'
 
-const TeacherRoutes = ({ isAuthenticated, role }) => (
+const TeacherRoutes = ({ isAuthenticated, role, setUser }) => (
 	<Router>
 		<div className='container'>
 			<div className='left'>
 				<Sidebar />
 			</div>
 			<div className='right'>
-				<Header role={role} />
+				<Header role={role} setUser={setUser} />
 				<div className='content'>
 					<Routes>
 						<Route

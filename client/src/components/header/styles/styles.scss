@@ -64,3 +64,39 @@ header.header {
 		}
 	}
 }
+
+/* styles.scss */
+
+/* Ensure the header has relative positioning for the popup to position correctly */
+.header {
+	position: relative !important;
+}
+
+.user-name-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 1.2em;
+	color: #333;
+	text-align: left;
+}
+
+.logout-popup {
+	position: absolute;
+	top: 100%; /* Position below the header */
+	right: 0;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	z-index: 1000; /* Ensure it's above other content */
+}
+
+.logout-popup p {
+	margin: 0 0 10px;
+}
+
+.logout-popup button {
+	margin-right: 10px;
+}

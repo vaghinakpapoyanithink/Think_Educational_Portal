@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import './styles/styles.scss'
 import UserContext from '../../contexts/UserContext.js'
 
 export default function Header({ role, setUser }) {
 	const { user } = useContext(UserContext)
+	const [showLogoutPopup, setShowLogoutPopup] = useState(false)
 
 	if (!user) {
 		return null
@@ -13,6 +14,15 @@ export default function Header({ role, setUser }) {
 	const logout = () => {
 		localStorage.removeItem('token')
 		setUser(null)
+		setShowLogoutPopup(false) // Close popup after logout
+	}
+
+	const handleLogoutClick = () => {
+		setShowLogoutPopup(!showLogoutPopup) // Toggle popup visibility
+	}
+
+	const handleClosePopup = () => {
+		setShowLogoutPopup(false) // Close popup without logging out
 	}
 
 	if (user.role === '') {
@@ -27,6 +37,7 @@ export default function Header({ role, setUser }) {
 			</header>
 		)
 	}
+
 	if (user.role === 'admin') {
 		return (
 			<header className='header'>
@@ -59,53 +70,75 @@ export default function Header({ role, setUser }) {
 		)
 	} else if (user.role === 'student') {
 		return (
-			<header className='header'>
-				<nav>
-					<ul>
-						<li>
-							<NavLink to='/stream' activeclassname='active'>
-								Stream
-							</NavLink>
-						</li>
-						<li>
-							<NavLink to='/homeworks' activeclassname='active'>
-								Homeworks
-							</NavLink>
-						</li>
-						<li>
-							<NavLink to='/users' activeclassname='active'>
-								Users
-							</NavLink>
-						</li>
-					</ul>
-				</nav>
-				<h1>{user.name + ' ' + user.surname}</h1>
-			</header>
+			<>
+				<header className='header'>
+					<nav>
+						<ul>
+							<li>
+								<NavLink to='/stream' activeclassname='active'>
+									Stream
+								</NavLink>
+							</li>
+							<li>
+								<NavLink to='/homeworks' activeclassname='active'>
+									Homeworks
+								</NavLink>
+							</li>
+							<li>
+								<NavLink to='/users' activeclassname='active'>
+									Users
+								</NavLink>
+							</li>
+						</ul>
+					</nav>
+					<button className='user-name-button' onClick={handleLogoutClick}>
+						{user.name + ' ' + user.surname}
+					</button>
+					{showLogoutPopup && (
+						<div className='logout-popup'>
+							<p>Do you want to log out?</p>
+							<button onClick={logout}>Yes</button>
+							<button onClick={handleClosePopup}>No</button>
+						</div>
+					)}
+				</header>
+			</>
 		)
 	} else if (user.role === 'teacher') {
 		return (
-			<header className='header'>
-				<nav>
-					<ul>
-						<li>
-							<NavLink to='/stream' activeclassname='active'>
-								Stream
-							</NavLink>
-						</li>
-						<li>
-							<NavLink to='/homeworks' activeclassname='active'>
-								Homeworks
-							</NavLink>
-						</li>
-						<li>
-							<NavLink to='/users' activeclassname='active'>
-								Users
-							</NavLink>
-						</li>
-					</ul>
-				</nav>
-				<h1>Educational Portal</h1>
-			</header>
+			<>
+				<header className='header'>
+					<nav>
+						<ul>
+							<li>
+								<NavLink to='/stream' activeclassname='active'>
+									Stream
+								</NavLink>
+							</li>
+							<li>
+								<NavLink to='/homeworks' activeclassname='active'>
+									Homeworks
+								</NavLink>
+							</li>
+							<li>
+								<NavLink to='/users' activeclassname='active'>
+									Users
+								</NavLink>
+							</li>
+						</ul>
+					</nav>
+					<button className='user-name-button' onClick={handleLogoutClick}>
+						Educational Portal
+					</button>
+					{showLogoutPopup && (
+						<div className='logout-popup'>
+							<p>Do you want to log out?</p>
+							<button onClick={logout}>Yes</button>
+							<button onClick={handleClosePopup}>No</button>
+						</div>
+					)}
+				</header>
+			</>
 		)
 	}
 }
