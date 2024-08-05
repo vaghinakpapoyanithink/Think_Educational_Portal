@@ -1,11 +1,18 @@
-import React, { useState, useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
 import './styles/styles.scss'
 import UserContext from '../../contexts/UserContext.js'
+import { Link } from 'react-router-dom'
 
 export default function Header({ role, setUser }) {
 	const { user } = useContext(UserContext)
 	const [showLogoutPopup, setShowLogoutPopup] = useState(false)
+	const [idFromUrl, setIdFromUrl] = useState('')
+
+	useEffect(() => {
+		const pathArray = window.location.pathname.split('/')
+		const id = pathArray[pathArray.length - 1]
+		setIdFromUrl(id)
+	}, [])
 
 	if (!user) {
 		return null
@@ -44,24 +51,16 @@ export default function Header({ role, setUser }) {
 				<nav>
 					<ul>
 						<li>
-							<NavLink to='/admin/users' activeclassname='active'>
-								All users
-							</NavLink>
+							<Link to='/admin/users'>All users</Link>
 						</li>
 						<li>
-							<NavLink to='/admin/create-user' activeclassname='active'>
-								Create a user
-							</NavLink>
+							<Link to='/admin/create-user'>Create a user</Link>
 						</li>
 						<li>
-							<NavLink to='/admin/courses' activeclassname='active'>
-								All courses
-							</NavLink>
+							<Link to='/admin/courses'>All courses</Link>
 						</li>
 						<li>
-							<NavLink to='/admin/create-course' activeclassname='active'>
-								Create a course
-							</NavLink>
+							<Link to='/admin/create-course'>Create a course</Link>
 						</li>
 					</ul>
 				</nav>
@@ -75,19 +74,13 @@ export default function Header({ role, setUser }) {
 					<nav>
 						<ul>
 							<li>
-								<NavLink to='/stream' activeclassname='active'>
-									Stream
-								</NavLink>
+								<Link to={`/stream/${idFromUrl}`}>Stream</Link>
 							</li>
 							<li>
-								<NavLink to='/homeworks' activeclassname='active'>
-									Homeworks
-								</NavLink>
+								<Link to={`/homeworks/${idFromUrl}`}>Homeworks</Link>
 							</li>
 							<li>
-								<NavLink to='/users' activeclassname='active'>
-									Users
-								</NavLink>
+								<Link to={`/users/${idFromUrl}`}>Users</Link>
 							</li>
 						</ul>
 					</nav>
@@ -111,19 +104,13 @@ export default function Header({ role, setUser }) {
 					<nav>
 						<ul>
 							<li>
-								<NavLink to='/stream' activeclassname='active'>
-									Stream
-								</NavLink>
+								<Link to={`/stream/${idFromUrl}`}>Stream</Link>
 							</li>
 							<li>
-								<NavLink to='/homeworks' activeclassname='active'>
-									Homeworks
-								</NavLink>
+								<Link to={`/homeworks/${idFromUrl}`}>Homeworks</Link>
 							</li>
 							<li>
-								<NavLink to='/users' activeclassname='active'>
-									Users
-								</NavLink>
+								<Link to={`/users/${idFromUrl}`}>Users</Link>
 							</li>
 						</ul>
 					</nav>

@@ -20,10 +20,14 @@ function App() {
 		return <AdminRoutes isAuthenticated={!!user} setUser={setUser} />
 	}
 	if (user?.role === 'student') {
-		return <StudentRoutes setUser={setUser} isAuthenticated={!!user} />
+		return (
+			<StudentRoutes user={user} setUser={setUser} isAuthenticated={!!user} />
+		)
 	}
 	if (user?.role === 'teacher') {
-		return <TeacherRoutes setUser={setUser} isAuthenticated={!!user} />
+		return (
+			<TeacherRoutes user={user} setUser={setUser} isAuthenticated={!!user} />
+		)
 	}
 
 	return null

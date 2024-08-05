@@ -14,18 +14,16 @@ const courseIcons = {
 
 export default function Sidebar({ role }) {
 	const { user } = useContext(UserContext)
-
 	if (user?.courses?.length === 1 || !user || role === 'admin') {
 		return null
 	}
-
 	if (role === 'student') {
 		return (
 			<div className='sidebar'>
 				<ul>
 					{user.courses?.map(course => (
 						<li key={course.courseName}>
-							<Link to={`/${course.courseId}`}>
+							<Link to={`/${course._id}`}>
 								<img
 									src={courseIcons[course.courseName] || webIcon}
 									alt={course.courseName}
@@ -43,13 +41,13 @@ export default function Sidebar({ role }) {
 				<ul>
 					{user.courses?.map(course => (
 						<li key={course.courseName}>
-							<a href='#'>
+							<Link to={`/${course._id}`}>
 								<img
 									src={courseIcons[course.courseName] || webIcon}
 									alt={course.courseName}
 								/>{' '}
 								{course.courseName}
-							</a>
+							</Link>
 						</li>
 					))}
 				</ul>

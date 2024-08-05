@@ -53,7 +53,6 @@ module.exports = io => {
 	}
 
 	const getAllCourses = async (req, res) => {
-		console.log('sdf')
 		try {
 			const courses = await Course.find()
 			res.status(200).json(courses)
@@ -81,6 +80,12 @@ module.exports = io => {
 		try {
 			const courseId = req.params.courseId
 			const updateData = req.body
+			const existingCourse = await Course.findById(courseId)
+
+			if (!existingCourse) {
+				return res.status(404).send({ message: 'Course not found' })
+			}
+
 			const updatedCourse = await Course.findByIdAndUpdate(
 				courseId,
 				updateData,
@@ -89,9 +94,40 @@ module.exports = io => {
 				}
 			)
 
-			if (!updatedCourse) {
-				return res.status(404).send({ message: 'Course not found' })
-			}
+			const oldTeachers = existingCourse.teachers
+			const newTeachers = updateData.teachers || []
+			const oldStudents = existingCourse.students
+			const newStudents = updateData.students || []
+
+			const teachersToAdd = newTeachers.filter(
+				teacher => !oldTeachers.includes(teacher)
+			)
+			const teachersToRemove = oldTeachers.filter(
+				teacher => !newTeachers.includes(teacher)
+			)
+			const studentsToAdd = newStudents.filter(
+				student => !oldStudents.includes(student)
+			)
+			const studentsToRemove = oldStudents.filter(
+				student => !newStudents.includes(student)
+			)
+
+			await User.updateMany(
+				{ _id: { $in: teachersToAdd } },
+				{ $push: { courses: courseId } }
+			)
+			await User.updateMany(
+				{ _id: { $in: teachersToRemove } },
+				{ $pull: { courses: courseId } }
+			)
+			await User.updateMany(
+				{ _id: { $in: studentsToAdd } },
+				{ $push: { courses: courseId } }
+			)
+			await User.updateMany(
+				{ _id: { $in: studentsToRemove } },
+				{ $pull: { courses: courseId } }
+			)
 
 			res.send(updatedCourse)
 		} catch (error) {
@@ -119,6 +155,70 @@ module.exports = io => {
 			res.status(500).send({ message: error.message })
 		}
 	}
+	const addHomework = async (req, res) => {
+		const { courseId } = req.params
+		const { title, description, dueDate } = req.body
+
+		try {
+			const course = await Course.findById(courseId)
+			if (!course) {
+				return res.status(404).send('Course not found')
+			}
+
+			const newHomework = {
+				title,
+				description,
+				dueDate,
+			}
+
+			course.homeworks.push(newHomework)
+			await course.save()
+			res.status(201).send(course)
+		} catch (error) {
+			res.status(500).send(error.message)
+		}
+	}
+	const updateHomework = async (req, res) => {
+		const { courseId, homeworkId } = req.params
+		const { title, description, dueDate } = req.body
+
+		try {
+			const course = await Course.findById(courseId)
+			if (!course) {
+				return res.status(404).send('Course not found')
+			}
+
+			const homework = course.homeworks.id(homeworkId)
+			if (!homework) {
+				return res.status(404).send('Homework not found')
+			}
+
+			homework.title = title || homework.title
+			homework.description = description || homework.description
+			homework.dueDate = dueDate || homework.dueDate
+
+			await course.save()
+			res.status(200).send(course)
+		} catch (error) {
+			res.status(500).send(error.message)
+		}
+	}
+	const deleteHomework = async (req, res) => {
+		const { courseId, homeworkId } = req.params
+
+		try {
+			const course = await Course.findById(courseId)
+			if (!course) {
+				return res.status(404).send('Course not found')
+			}
+
+			course.homeworks.id(homeworkId).remove()
+			await course.save()
+			res.status(200).send(course)
+		} catch (error) {
+			res.status(500).send(error.message)
+		}
+	}
 
 	return {
 		addCourse,
@@ -127,5 +227,8 @@ module.exports = io => {
 		getCourseById,
 		updateCourse,
 		deleteCourse,
+		addHomework,
+		deleteHomework,
+		updateHomework,
 	}
 }

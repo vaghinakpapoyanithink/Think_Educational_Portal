@@ -1,12 +1,21 @@
+// Color Variables
+$primary-color: #007bff;
+$primary-hover: #0056b3;
+$secondary-color: #e5e5ea;
+$text-color: #333;
+$background-color: #f9f9f9;
+$border-color: #ccc;
+$box-shadow-color: rgba(0, 0, 0, 0.1);
+
 .chat-container {
 	margin: 0 auto;
 	padding: 20px;
-	background-color: #f9f9f9;
+	background-color: $background-color;
 	border-radius: 8px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 6px $box-shadow-color;
 	display: flex;
 	flex-direction: column;
-	height: calc(100vh - 100px); /* Full viewport height */
+	height: calc(100vh - 100px); // Full viewport height
 
 	form {
 		position: sticky;
@@ -14,23 +23,22 @@
 		left: 0;
 		right: 0;
 		padding: 10px;
-		background-color: #f9f9f9;
-		border-top: 1px solid #ccc;
+		background-color: $background-color;
+		border-top: 1px solid $border-color;
 		display: flex;
 		align-items: center;
 
-		input {
+		.editor {
 			flex: 1;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-			box-sizing: border-box;
-			margin-right: 10px;
-
-			&:focus {
-				border-color: #007bff;
-				outline: none;
-				box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+			max-height: 100%;
+			.ql-container {
+				height: auto;
+				border: 1px solid $border-color;
+				border-radius: 4px;
+				width: 100%;
+				.ql-editor {
+					padding: 10px;
+				}
 			}
 		}
 
@@ -38,13 +46,14 @@
 			padding: 10px 20px;
 			border: none;
 			border-radius: 4px;
-			background-color: #007bff;
+			background-color: $primary-color;
 			color: #fff;
 			font-size: 16px;
 			cursor: pointer;
+			transition: background-color 0.3s;
 
 			&:hover {
-				background-color: #0056b3;
+				background-color: $primary-hover;
 			}
 		}
 	}
@@ -52,58 +61,194 @@
 
 .content {
 	display: flex;
-	padding: 30px;
+	padding: 15px;
 	flex-direction: column;
-
-	flex: 1; /* Takes up remaining space */
+	flex: 1; // Takes up remaining space
 }
 
 .messages {
-	flex: 1; /* Takes up remaining space */
-	overflow-y: auto; /* Enables scrolling */
-	overflow-x: hidden; /* Enables scrolling */
-	padding-bottom: 10px; /* Space for the fixed form */
+	flex: 1; // Takes up remaining space
+	overflow-y: auto; // Enables scrolling
+	overflow-x: hidden; // Prevents horizontal scrolling
+	padding-bottom: 10px; // Space for the fixed form
 	display: flex;
 	flex-direction: column;
+
+	.message {
+		margin-bottom: 10px;
+		padding: 10px 20px;
+		max-width: 60%;
+		min-width: 200px;
+		border-radius: 15px;
+		box-shadow: 0 2px 4px $box-shadow-color;
+		display: flex;
+		flex-direction: column;
+
+		&.sent {
+			align-self: flex-end;
+			background-color: $primary-color;
+			color: #fff;
+		}
+
+		&.received {
+			align-self: flex-start;
+			background-color: $secondary-color;
+			color: $text-color;
+		}
+
+		.message-content {
+			display: flex;
+			flex-direction: column;
+
+			.sender {
+				font-weight: bold;
+				margin-bottom: 5px;
+			}
+
+			.text {
+				margin-bottom: 5px;
+			}
+
+			.timestamp {
+				font-size: 0.75em;
+				align-self: flex-end;
+			}
+		}
+	}
 }
 
-.message {
-	margin-bottom: 10px;
-	padding: 10px;
-	max-width: 60%;
-	border-radius: 15px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.message-form {
+	position: relative;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: stretch !important;
+	max-height: 200px;
+	height: 150px;
+	.editor {
+		overflow-y: auto;
+		flex: 1;
+		.ql-container {
+			border: 1px solid $border-color;
+			border-radius: 4px;
+			.ql-editor {
+				max-height: 100%;
+			}
+		}
+	}
+	button.send {
+		position: absolute;
+		right: 20px;
+		font-size: 12px;
+		bottom: 20px;
+	}
+}
+.ql-editor p {
+	margin: 0;
 }
 
-.sent {
-	align-self: flex-end;
-	background-color: #007bff;
-	color: #fff;
+.ql-editor a {
+	color: #007bff;
+	text-decoration: underline;
 }
 
-.received {
-	align-self: flex-start;
-	background-color: #e5e5ea;
-	color: #000;
-}
-
-.message-content {
-	display: flex;
-	flex-direction: column;
-}
-
-.sender {
+.ql-editor b,
+.ql-editor strong {
 	font-weight: bold;
-	margin-bottom: 5px;
 }
 
-.text {
-	margin-bottom: 5px;
+.ql-editor i,
+.ql-editor em {
+	font-style: italic;
 }
 
-.timestamp {
-	font-size: 0.75em;
-	align-self: flex-end;
+.ql-editor u {
+	text-decoration: underline;
+}
+
+.ql-editor s {
+	text-decoration: line-through;
+}
+
+.ql-editor ul,
+.ql-editor ol {
+	margin: 0;
+	padding-left: 20px;
+}
+
+.ql-editor ul {
+	list-style-type: disc;
+}
+
+.ql-editor ol {
+	list-style-type: decimal;
+}
+
+@media (max-width: 768px) {
+	.chat-container {
+		padding: 10px;
+	}
+
+	.messages {
+		.message {
+			max-width: 80%;
+		}
+	}
+}
+
+/* Styles specific to the message content */
+.message-content p {
+	margin: 5px 0;
+}
+
+.message-content a {
+	color: #007bff;
+	text-decoration: underline;
+}
+
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6 {
+	margin: 10px 0;
+}
+
+.message-content strong {
+	font-weight: bold;
+}
+
+.message-content em {
+	font-style: italic;
+}
+
+.message-content u {
+	text-decoration: underline;
+}
+
+.message-content s {
+	text-decoration: line-through;
+}
+
+.message-content ul,
+.message-content ol {
+	margin: 10px 0;
+	padding-left: 20px;
+}
+
+.message-content ul {
+	list-style-type: disc;
+}
+
+.message-content ol {
+	list-style-type: decimal;
+}
+
+.message-content li {
+	margin: 5px 0;
+}
+
+.message-content .ql-ui {
+	display: none; /* Hide Quill UI markers */
 }

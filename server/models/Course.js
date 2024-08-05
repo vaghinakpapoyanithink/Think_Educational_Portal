@@ -2,6 +2,25 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+const homeworkSchema = new Schema({
+	title: {
+		type: String,
+		required: true,
+	},
+	description: {
+		type: String,
+		required: true,
+	},
+	dueDate: {
+		type: Date,
+		required: true,
+	},
+	assignedDate: {
+		type: Date,
+		default: Date.now,
+	},
+})
+
 const courseSchema = new Schema({
 	courseName: {
 		type: String,
@@ -27,6 +46,10 @@ const courseSchema = new Schema({
 	students: {
 		type: [String],
 		required: true,
+	},
+	homeworks: {
+		type: [homeworkSchema],
+		default: [],
 	},
 })
 

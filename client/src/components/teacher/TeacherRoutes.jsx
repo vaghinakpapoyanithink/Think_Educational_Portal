@@ -8,18 +8,18 @@ import Homework from '../../pages/homework/Homework.jsx'
 import Users from '../../pages/users/Users.jsx'
 import ProtectedRoute from '../../components/hoc/ProtectedRoute.jsx'
 
-const TeacherRoutes = ({ isAuthenticated, role, setUser }) => (
+const TeacherRoutes = ({ isAuthenticated, role, setUser, user }) => (
 	<Router>
 		<div className='container'>
 			<div className='left'>
-				<Sidebar />
+				<Sidebar role={user.role} />
 			</div>
 			<div className='right'>
-				<Header role={role} setUser={setUser} />
+				<Header role={user.role} setUser={setUser} />
 				<div className='content'>
 					<Routes>
 						<Route
-							path='/'
+							path='/:id'
 							element={
 								<ProtectedRoute
 									isAuthenticated={isAuthenticated}
@@ -28,7 +28,7 @@ const TeacherRoutes = ({ isAuthenticated, role, setUser }) => (
 							}
 						/>
 						<Route
-							path='/stream'
+							path='/stream/:id'
 							element={
 								<ProtectedRoute
 									isAuthenticated={isAuthenticated}
@@ -37,7 +37,7 @@ const TeacherRoutes = ({ isAuthenticated, role, setUser }) => (
 							}
 						/>
 						<Route
-							path='/homeworks'
+							path='/homeworks/:id'
 							element={
 								<ProtectedRoute
 									isAuthenticated={isAuthenticated}
@@ -46,7 +46,7 @@ const TeacherRoutes = ({ isAuthenticated, role, setUser }) => (
 							}
 						/>
 						<Route
-							path='/homework'
+							path='/homework/:id'
 							element={
 								<ProtectedRoute
 									isAuthenticated={isAuthenticated}
@@ -55,7 +55,7 @@ const TeacherRoutes = ({ isAuthenticated, role, setUser }) => (
 							}
 						/>
 						<Route
-							path='/users'
+							path='/users/:id'
 							element={
 								<ProtectedRoute
 									isAuthenticated={isAuthenticated}

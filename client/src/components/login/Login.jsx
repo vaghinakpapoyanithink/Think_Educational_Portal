@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig.js'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,6 +11,7 @@ export default function Login({ setUser }) {
 		password: '',
 	})
 	const [error, setError] = useState('')
+	const navigate = useNavigate()
 
 	const handleChange = e => {
 		setFormData({
@@ -25,6 +27,7 @@ export default function Login({ setUser }) {
 			toast.success('Login successful!')
 			localStorage.setItem('token', response.data.token)
 			setUser(response.data)
+			navigate(`/${response.data.courses[0]._id}`)
 		} catch (err) {
 			toast.error('Invalid email/username or password')
 			setError('Invalid email/username or password')
