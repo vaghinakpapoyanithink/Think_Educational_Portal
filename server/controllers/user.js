@@ -175,7 +175,21 @@ const loginUser = async (req, res) => {
 
 		const user = await User.findOne({
 			$or: [{ email: identifier }, { username: identifier }],
-		}).populate('courses')
+		}).populate({
+			path: 'courses',
+			populate: [
+				{
+					path: 'students',
+					model: 'User',
+					select: '-password',
+				},
+				{
+					path: 'teachers',
+					model: 'User',
+					select: '-password',
+				},
+			],
+		})
 
 		if (!user) {
 			return res

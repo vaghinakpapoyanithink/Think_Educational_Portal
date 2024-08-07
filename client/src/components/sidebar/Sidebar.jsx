@@ -12,8 +12,9 @@ const courseIcons = {
 	scratch: scratchIcon,
 }
 
-export default function Sidebar({ role }) {
+export default function Sidebar({ role, idFromUrl }) {
 	const { user } = useContext(UserContext)
+
 	if (user?.courses?.length === 1 || !user || role === 'admin') {
 		return null
 	}
@@ -22,7 +23,10 @@ export default function Sidebar({ role }) {
 			<div className='sidebar'>
 				<ul>
 					{user.courses?.map(course => (
-						<li key={course.courseName}>
+						<li
+							key={course.courseName}
+							className={idFromUrl === course._id ? 'active' : ''}
+						>
 							<Link to={`/${course._id}`}>
 								<img
 									src={courseIcons[course.courseName] || webIcon}
@@ -40,7 +44,10 @@ export default function Sidebar({ role }) {
 			<div className='sidebar'>
 				<ul>
 					{user.courses?.map(course => (
-						<li key={course.courseName}>
+						<li
+							key={course.courseName}
+							className={idFromUrl === course._id ? 'active' : ''}
+						>
 							<Link to={`/${course._id}`}>
 								<img
 									src={courseIcons[course.courseName] || webIcon}

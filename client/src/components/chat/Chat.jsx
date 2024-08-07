@@ -5,12 +5,25 @@ import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 import './style/style.scss'
 
+function formatDateToMDY(isoDate) {
+	const date = new Date(isoDate)
+	const month = date.getMonth() + 1
+	const day = date.getDate()
+	const year = date.getFullYear()
+	const formattedMonth = month < 10 ? `0${month}` : month
+	const formattedDay = day < 10 ? `0${day}` : day
+	return `${formattedMonth}-${formattedDay}-${year}`
+}
 const Chat = ({ courseId }) => {
 	const { messages, sendMessage } = useContext(ChatContext)
 	const { user } = useContext(UserContext)
 	const [content, setContent] = useState('')
 	const editorRef = useRef(null)
 	const messagesEndRef = useRef(null)
+
+	const homeworks = user.courses.find(
+		course => course._id === courseId
+	)?.homeworks
 
 	useEffect(() => {
 		const editor = new Quill(editorRef.current, {
@@ -45,7 +58,7 @@ const Chat = ({ courseId }) => {
 	}
 
 	const scrollToBottom = () => {
-		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+		messagesEndRef.current?.scrollIntoView()
 	}
 
 	useEffect(() => {
@@ -77,6 +90,10 @@ const Chat = ({ courseId }) => {
 						</div>
 					</div>
 				))}
+				<div className='homework'>
+					<div className='left'>Homework: {homeworks[0].title}</div>
+					<div className='right'>{formatDateToMDY(homeworks[0].dueDate)}</div>
+				</div>
 				<div ref={messagesEndRef} />
 			</div>
 			<form onSubmit={handleSubmit} className='message-form'>

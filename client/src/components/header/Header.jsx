@@ -1,18 +1,11 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import './styles/styles.scss'
 import UserContext from '../../contexts/UserContext.js'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
-export default function Header({ role, setUser }) {
+export default function Header({ role, setUser, setIdFromUrl, idFromUrl }) {
 	const { user } = useContext(UserContext)
 	const [showLogoutPopup, setShowLogoutPopup] = useState(false)
-	const [idFromUrl, setIdFromUrl] = useState('')
-
-	useEffect(() => {
-		const pathArray = window.location.pathname.split('/')
-		const id = pathArray[pathArray.length - 1]
-		setIdFromUrl(id)
-	}, [])
 
 	if (!user) {
 		return null
@@ -51,16 +44,24 @@ export default function Header({ role, setUser }) {
 				<nav>
 					<ul>
 						<li>
-							<Link to='/admin/users'>All users</Link>
+							<NavLink to='/admin/users' activeClassName='active'>
+								All users
+							</NavLink>
 						</li>
 						<li>
-							<Link to='/admin/create-user'>Create a user</Link>
+							<NavLink to='/admin/create-user' activeClassName='active'>
+								Create a user
+							</NavLink>
 						</li>
 						<li>
-							<Link to='/admin/courses'>All courses</Link>
+							<NavLink to='/admin/courses' activeClassName='active'>
+								All courses
+							</NavLink>
 						</li>
 						<li>
-							<Link to='/admin/create-course'>Create a course</Link>
+							<NavLink to='/admin/create-course' activeClassName='active'>
+								Create a course
+							</NavLink>
 						</li>
 					</ul>
 				</nav>
@@ -69,63 +70,71 @@ export default function Header({ role, setUser }) {
 		)
 	} else if (user.role === 'student') {
 		return (
-			<>
-				<header className='header'>
-					<nav>
-						<ul>
-							<li>
-								<Link to={`/stream/${idFromUrl}`}>Stream</Link>
-							</li>
-							<li>
-								<Link to={`/homeworks/${idFromUrl}`}>Homeworks</Link>
-							</li>
-							<li>
-								<Link to={`/users/${idFromUrl}`}>Users</Link>
-							</li>
-						</ul>
-					</nav>
-					<button className='user-name-button' onClick={handleLogoutClick}>
-						{user.name + ' ' + user.surname}
-					</button>
-					{showLogoutPopup && (
-						<div className='logout-popup'>
-							<p>Do you want to log out?</p>
-							<button onClick={logout}>Yes</button>
-							<button onClick={handleClosePopup}>No</button>
-						</div>
-					)}
-				</header>
-			</>
+			<header className='header'>
+				<nav>
+					<ul>
+						<li>
+							<NavLink to={`/stream/${idFromUrl}`} activeClassName='active'>
+								Stream
+							</NavLink>
+						</li>
+						<li>
+							<NavLink to={`/homeworks/${idFromUrl}`} activeClassName='active'>
+								Homeworks
+							</NavLink>
+						</li>
+						<li>
+							<NavLink to={`/users/${idFromUrl}`} activeClassName='active'>
+								Users
+							</NavLink>
+						</li>
+					</ul>
+				</nav>
+				<button className='user-name-button' onClick={handleLogoutClick}>
+					{user.name + ' ' + user.surname}
+				</button>
+				{showLogoutPopup && (
+					<div className='logout-popup'>
+						<p>Do you want to log out?</p>
+						<button onClick={logout}>Yes</button>
+						<button onClick={handleClosePopup}>No</button>
+					</div>
+				)}
+			</header>
 		)
 	} else if (user.role === 'teacher') {
 		return (
-			<>
-				<header className='header'>
-					<nav>
-						<ul>
-							<li>
-								<Link to={`/stream/${idFromUrl}`}>Stream</Link>
-							</li>
-							<li>
-								<Link to={`/homeworks/${idFromUrl}`}>Homeworks</Link>
-							</li>
-							<li>
-								<Link to={`/users/${idFromUrl}`}>Users</Link>
-							</li>
-						</ul>
-					</nav>
-					<button className='user-name-button' onClick={handleLogoutClick}>
-						Educational Portal
-					</button>
-					{showLogoutPopup && (
-						<div className='logout-popup'>
-							<p>Do you want to log out?</p>
-							<button onClick={logout}>Yes</button>
-							<button onClick={handleClosePopup}>No</button>
-						</div>
-					)}
-				</header>
-			</>
+			<header className='header'>
+				<nav>
+					<ul>
+						<li>
+							<NavLink to={`/stream/${idFromUrl}`} activeClassName='active'>
+								Stream
+							</NavLink>
+						</li>
+						<li>
+							<NavLink to={`/homeworks/${idFromUrl}`} activeClassName='active'>
+								Homeworks
+							</NavLink>
+						</li>
+						<li>
+							<NavLink to={`/users/${idFromUrl}`} activeClassName='active'>
+								Users
+							</NavLink>
+						</li>
+					</ul>
+				</nav>
+				<button className='user-name-button' onClick={handleLogoutClick}>
+					Educational Portal
+				</button>
+				{showLogoutPopup && (
+					<div className='logout-popup'>
+						<p>Do you want to log out?</p>
+						<button onClick={logout}>Yes</button>
+						<button onClick={handleClosePopup}>No</button>
+					</div>
+				)}
+			</header>
 		)
 	}
 }

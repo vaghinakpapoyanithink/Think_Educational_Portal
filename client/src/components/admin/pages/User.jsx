@@ -15,8 +15,7 @@ export default function User() {
 		email: '',
 		password: '',
 	})
-	const [teacherCourses, setTeacherCourses] = useState([])
-	const [studentCourses, setStudentCourses] = useState([])
+	const [courses, setCourses] = useState([])
 	const [userRole, setUserRole] = useState('')
 	const navigate = useNavigate()
 
@@ -36,23 +35,9 @@ export default function User() {
 				email: userData.email,
 			})
 			setUserRole(userData.role)
-			fetchCourses(userData.role)
+			setCourses(userData.courses)
 		} catch (error) {
 			console.error('Error fetching user:', error)
-		}
-	}
-
-	const fetchCourses = async role => {
-		try {
-			const response = await axiosInstance.get(`/course?userId=${userId}`)
-			const { teacherCourses, studentCourses } = response.data
-			if (role === 'teacher') {
-				setTeacherCourses(teacherCourses)
-			} else {
-				setStudentCourses(studentCourses)
-			}
-		} catch (error) {
-			console.error('Error fetching courses:', error)
 		}
 	}
 
@@ -148,34 +133,18 @@ export default function User() {
 						/>
 					</div>
 
-					{userRole === 'teacher' && (
-						<div className='user-courses'>
-							<h2>Courses as Teacher</h2>
-							<ul>
-								{teacherCourses.map(course => (
-									<li key={course._id}>
-										{course.courseName} (Starts:{' '}
-										{new Date(course.starts).toLocaleDateString()}, Ends:{' '}
-										{new Date(course.ends).toLocaleDateString()})
-									</li>
-								))}
-							</ul>
-						</div>
-					)}
-					{userRole === 'student' && (
-						<div className='user-courses'>
-							<h2>Courses as Student</h2>
-							<ul>
-								{studentCourses.map(course => (
-									<li key={course._id}>
-										{course.courseName} (Starts:{' '}
-										{new Date(course.starts).toLocaleDateString()}, Ends:{' '}
-										{new Date(course.ends).toLocaleDateString()})
-									</li>
-								))}
-							</ul>
-						</div>
-					)}
+					<div className='user-courses'>
+						<h2>Courses</h2>
+						<ul>
+							{courses.map(course => (
+								<li key={course._id}>
+									{course.courseName} (Starts:{' '}
+									{new Date(course.starts).toLocaleDateString()}, Ends:{' '}
+									{new Date(course.ends).toLocaleDateString()})
+								</li>
+							))}
+						</ul>
+					</div>
 					<button type='submit'>Save Changes</button>
 					<Link to='/admin/users'>
 						<button className='go-back'>Back to Users</button>

@@ -27,7 +27,15 @@ export default function Login({ setUser }) {
 			toast.success('Login successful!')
 			localStorage.setItem('token', response.data.token)
 			setUser(response.data)
-			navigate(`/${response.data.courses[0]._id}`)
+
+			if (
+				response.data.role === 'student' ||
+				response.data.role === 'teacher'
+			) {
+				navigate(`/${response.data.courses[0]._id}`)
+			} else if (response.data.role === 'admin') {
+				navigate('/')
+			}
 		} catch (err) {
 			toast.error('Invalid email/username or password')
 			setError('Invalid email/username or password')

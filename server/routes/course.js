@@ -21,9 +21,9 @@ module.exports = io => {
 	router.get('/:courseId', getCourseById)
 	router.put('/:courseId', updateCourse)
 	router.delete('/:courseId', deleteCourse)
-	router.post('/courses/:courseId/homeworks', addHomework)
-	router.put('/courses/:courseId/homeworks/:homeworkId', updateHomework)
-	router.delete('/courses/:courseId/homeworks/:homeworkId', deleteHomework)
+	router.post('/:courseId/homeworks', addHomework)
+	router.put('/:courseId/homeworks/:homeworkId', updateHomework)
+	router.delete('/:courseId/homeworks/:homeworkId', deleteHomework)
 
 	return router
 }

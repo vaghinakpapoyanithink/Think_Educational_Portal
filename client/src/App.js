@@ -4,6 +4,7 @@ import AdminRoutes from './components/admin/AdminRoutes.jsx'
 import StudentRoutes from './components/student/StudentRoutes.jsx'
 import TeacherRoutes from './components/teacher/TeacherRoutes.jsx'
 import './styles/styles.scss'
+import { BrowserRouter as Router } from 'react-router-dom'
 import Loading from './components/loading/Loading.jsx'
 import UserContext, { UserProvider } from './contexts/UserContext'
 
@@ -21,12 +22,16 @@ function App() {
 	}
 	if (user?.role === 'student') {
 		return (
-			<StudentRoutes user={user} setUser={setUser} isAuthenticated={!!user} />
+			<Router>
+				<StudentRoutes user={user} setUser={setUser} isAuthenticated={!!user} />
+			</Router>
 		)
 	}
 	if (user?.role === 'teacher') {
 		return (
-			<TeacherRoutes user={user} setUser={setUser} isAuthenticated={!!user} />
+			<Router>
+				<TeacherRoutes user={user} setUser={setUser} isAuthenticated={!!user} />
+			</Router>
 		)
 	}
 

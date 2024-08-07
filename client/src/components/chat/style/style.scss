@@ -8,6 +8,36 @@ $border-color: #ccc;
 $box-shadow-color: rgba(0, 0, 0, 0.1);
 
 .chat-container {
+	.homework {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px;
+		background-color: #f9f9f9;
+		border-radius: 8px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		margin-bottom: 10px;
+
+		.left {
+			flex: 1;
+			font-size: 16px;
+			color: #333;
+			display: flex;
+			font-weight: 500;
+		}
+
+		.right {
+			font-size: 14px;
+			color: #888;
+			text-align: right;
+		}
+
+		&:hover {
+			background-color: #f1f1f1;
+			cursor: pointer;
+		}
+	}
+
 	margin: 0 auto;
 	padding: 20px;
 	background-color: $background-color;
@@ -22,7 +52,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.1);
 		bottom: 0;
 		left: 0;
 		right: 0;
-		padding: 10px;
+		padding: 10px 0;
 		background-color: $background-color;
 		border-top: 1px solid $border-color;
 		display: flex;

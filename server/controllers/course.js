@@ -212,7 +212,19 @@ module.exports = io => {
 				return res.status(404).send('Course not found')
 			}
 
-			course.homeworks.id(homeworkId).remove()
+			// Check if the homework exists
+			const homeworkExists = course.homeworks.some(
+				homework => homework._id.toString() === homeworkId
+			)
+			if (!homeworkExists) {
+				return res.status(404).send('Homework not found')
+			}
+
+			// Filter out the homework to delete
+			course.homeworks = course.homeworks.filter(
+				homework => homework._id.toString() !== homeworkId
+			)
+
 			await course.save()
 			res.status(200).send(course)
 		} catch (error) {
